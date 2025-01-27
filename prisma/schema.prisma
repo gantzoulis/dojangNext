@@ -115,7 +115,6 @@ model Parent {
   model HMDBelts{
     id Int @id @default(autoincrement())
     level String @unique
-
     members Member[]
   }
 

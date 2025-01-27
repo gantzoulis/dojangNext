@@ -32,7 +32,7 @@ const FormModal = ({table, type, data, id}:{
     | "announcement";
     type:"create" | "update" | "delete" | "view";
     data?:any;
-    id?: number;
+    id?: string;
     
 
 }) => {
