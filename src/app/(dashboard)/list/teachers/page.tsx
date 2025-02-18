@@ -7,6 +7,8 @@ import prisma from "@/lib/prisma";
 import { Teacher } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { count } from "console";
 
 
 
@@ -47,7 +49,7 @@ const renderRow = (item:Teacher)=>(
         className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
       />
       <div className='flex flex-col'>
-        <h3 className="font-semibold">{item.name}</h3>
+        <h3 className="font-semibold">{item.name} {item.surname}</h3>
         <p className="text-xs text-gray-500">{item?.email}</p>
       </div>
     </td>
@@ -77,17 +79,37 @@ const renderRow = (item:Teacher)=>(
  </tr>
 );
 
-const TeachersListPage = async () => {
+const TeachersListPage = async ({searchParams}:
+  {
+    searchParams:{[key:string]:string | undefined}; 
+  }
+) => {
 
-  const data = await prisma.teacher.findMany();
+  
+  const {page, ...queryParams} = searchParams;
 
-  console.log(data);
+  const p = page ? parseInt(page) : 1;
 
+  const [data, countItems] = await prisma.$transaction([
+      prisma.teacher.findMany(
+      {
+        where:{
+          id:"teacher-2",
+        },
+        take:ITEMS_PER_PAGE,
+        skip: ITEMS_PER_PAGE *(p - 1),
+      }
+    ),
+    prisma.teacher.count({where:{
+      id:"teacher-2",
+    }}),
+  ]);
+  
   return (
     <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
       {/* TOP SECTION*/}
       <div className='flex items-center justify-between'>
-        <h1 className="hidden md:block text-lg font-semibold">All Teachers</h1>
+        <h1 className="hidden md:block text-lg font-semibold">Teachers <p className="text-xs font-semibold">{countItems} total Teachers</p></h1>
         <div className='flex flex-col md:flex-row items-center gap-4  w-full md:w-auto'>
           <TableSearch />
           <div className='flex items-center gap-4 self-end '>
@@ -109,7 +131,7 @@ const TeachersListPage = async () => {
       {/* LIST SECTION*/}
         <Table columns={columns} renderRow={renderRow} data={data}/>
       {/* PAGINATION SECTION*/}
-        <Pagination/>
+        <Pagination page={p} count={countItems} />
     </div>
   )
 }

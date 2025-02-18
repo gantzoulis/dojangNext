@@ -50,7 +50,10 @@ model Member {
 
   parentId String
   parent Parent @relation(fields: [parentId], references: [id])
+  
   lessons Lesson[]
+  certifications Certifications[]
+  
 }
 
 model Parent {
@@ -80,6 +83,7 @@ model Parent {
 
   lessons Lesson[]
   classes Class[]
+  certifications Certifications[]
  }
 
   model Class{
@@ -125,6 +129,18 @@ model Parent {
     members Member[]
   }
 
+    model Certifications {
+    id Int @id @default(autoincrement())
+    certName String
+    certDescription String
+    certCircle Itteration
+
+    memberId String
+    member Member @relation(fields:[memberId], references:[id])
+    teacherId String
+    Teacher Teacher @relation(fields: [teacherId], references: [id])
+  }
+
   model Attendance {
     id Int @id @default(autoincrement())
     date DateTime
@@ -153,9 +169,19 @@ model Parent {
   } 
 
 
+
+
 enum MemberSex{
   MALE
   FEMALE
+}
+
+enum Itteration {
+  MONTHLY
+  QUARTERLY
+  SEMESTERLY
+  ANNUALY
+  PERPETUALLY
 }
 
 enum Day {
