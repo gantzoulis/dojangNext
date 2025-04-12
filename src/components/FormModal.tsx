@@ -7,7 +7,7 @@ import { useState } from "react";
 // import MemberForm from "./forms/MemberForm";
 
 
-const TeacherForm = dynamic(()=>import("./forms/TeacherForm"),{
+const InstructorForm = dynamic(()=>import("./forms/InstructorForm"),{
     loading:()=> <h1>Loading...</h1>
 });
 const MemberForm = dynamic(()=>import("./forms/MemberForm"),{
@@ -17,13 +17,13 @@ const MemberForm = dynamic(()=>import("./forms/MemberForm"),{
 const forms :{[key:string]:(type:"create" | "update" , data?:any)=>JSX.Element;
 
 }={
-    teacher: (type,data) => <TeacherForm type={type} data={data}/>,
+    instructor: (type,data) => <InstructorForm type={type} data={data}/>,
     student: (type, data) => <MemberForm type={type} data={data}/>,
 };
 
 const FormModal = ({table, type, data, id}:{
     table:
-    | "teacher"
+    | "instructor"
     | "student"
     | "parent"
     | "class"
