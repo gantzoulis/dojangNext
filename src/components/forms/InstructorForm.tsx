@@ -57,7 +57,7 @@ const InstructorForm = ({
             <span className=" text-xs text-gray-400 font-medium">
                 Authentication Infromation
             </span>
-            <div className='flex justify-between flex-wrap gap-4'>
+            <div className='flex justify-between flex-wrap gap-2'>
                 <InputField 
                     label="Username" 
                     name="username" 

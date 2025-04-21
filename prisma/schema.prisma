@@ -21,6 +21,8 @@ model Academy {
   academyIsActive Boolean  @default(true)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  Member          Member?  @relation(fields: [memberId], references: [id])
+  memberId        String?
 }
 
 model Admin {
@@ -58,9 +60,9 @@ model Admin {
  */
 
 model Member {
-  id       String @id @default(cuid())
-  username String @unique
-
+  id           String     @id @default(cuid())
+  username     String     @unique
+  firebaseId   String?
   name         String
   surname      String
   email        String?    @unique
@@ -75,15 +77,15 @@ model Member {
 
   belt          Belt[]
   certification Certifications[]
-  memberMetrics MemberEvents[]
+  memberMetrics MemberMetrics[]
   parent        Parent[]
+  academy       Academy[]
 }
 
-model MemberEvents {
+model MemberMetrics {
   id          String   @id @default(cuid())
   weight      Float
   height      Float
-  event       String
   dateofentry DateTime @default(now())
 
   memberId String
@@ -126,7 +128,8 @@ model Instructor {
   isBloodDonor Boolean?   @default(false)
   sex          MemberSex?
 
-  belt Belt[]
+  disciplines MartialArtsDiscipline[]
+  Belt        Belt[]
 }
 
 model Class {
@@ -140,10 +143,11 @@ model Class {
 }
 
 model MartialArtsDiscipline {
-  id             String @id @default(cuid())
+  id             String       @id @default(cuid())
   artName        String
   artDescription String
   belts          Belt[]
+  instructor     Instructor[]
 }
 
 model Belt {

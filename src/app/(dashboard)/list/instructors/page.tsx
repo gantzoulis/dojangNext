@@ -4,18 +4,23 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, teachersData } from "@/lib/data";
 import prisma from "@/lib/prisma";
-import { Instructor } from "@prisma/client";
+import { Instructor, MartialArtsDiscipline } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { count } from "console";
 
 
-
+type InstsuctorList = Instructor & {disciplines:MartialArtsDiscipline[]}
 
 const columns = [
   {
     header:"info", accessor:"info"
+  },
+  {
+    header:"Disciplines",
+    accessor:"disciplines",
+    className:"hidden lg:table-cell"
   },
   {
     header:"Bloodtype",
@@ -38,7 +43,7 @@ const columns = [
   },
 ];
 
-const renderRow = (item:Instructor)=>(
+const renderRow = (item:InstsuctorList)=>(
  <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-zeidPurpleLight">
     <td className="flex items-center gap-4 p-4">
       <Image 
@@ -53,6 +58,8 @@ const renderRow = (item:Instructor)=>(
         <p className="text-xs text-gray-500">{item?.email}</p>
       </div>
     </td>
+    
+    <td className="hidden md:table-cell">{item.disciplines.map(disc=>disc.artName).join(",")}</td>
     <td className="hidden md:table-cell">{item.bloodType}</td>
     <td className="hidden md:table-cell">{item.phone}</td>
     <td className="hidden md:table-cell">{item?.address}</td>
@@ -94,12 +101,16 @@ const InstructorListPage = async ({searchParams}:
       {
         take:ITEMS_PER_PAGE,
         skip: ITEMS_PER_PAGE *(p - 1),
+        include:{
+          disciplines:true,
+        }
       }
     ),
     prisma.instructor.count(),
   ]);
 
   console.log("resolving " + countItems);
+
   
   return (
     <div className='bg-white p-4 rounded-md flex-1 m-4 mt-0'>
@@ -119,7 +130,7 @@ const InstructorListPage = async ({searchParams}:
             // <button className='w-8 h-8 flex items-center justify-center rounded-full bg-zeidYellow '>
             //   <Image src='/plus.png' alt="" width={14} height={14}/>
             // </button>
-            <FormModal table="instructor" type="create" />
+              <FormModal table="instructor" type="create" />
             )}
           </div>
         </div>
