@@ -14,8 +14,8 @@ const menuItems = [
       },
       {
         icon: "/blackandwhite-belt.png",
-        label: "Teachers",
-        href: "/list/teachers",
+        label: "Instructors",
+        href: "/list/instructors",
         visible: ["admin", "teacher"],
       },
       {
@@ -33,7 +33,7 @@ const menuItems = [
       {
         icon: "/box.png",
         label: "Classes",
-        href: "/list/subjects",
+        href: "/list/classes",
         visible: ["admin"],
       },
       {

@@ -138,8 +138,8 @@ model Class {
   classDescription String
   capacity         Int
   day              Day
-  startTime        DateTime
-  endTime          DateTime
+  startTime        String
+  endTime          String
 }
 
 model MartialArtsDiscipline {

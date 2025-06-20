@@ -91,10 +91,30 @@ const InstructorListPage = async ({searchParams}:
   }
 ) => {
 
-  
+  //console.log(searchParams);
+
   const {page, ...queryParams} = await searchParams;
 
   const p = page ? parseInt(page) : 1;
+
+  // URL PARA<S Conditions
+
+  if(queryParams){
+    for(const [key, value] of Object.entries(queryParams)){
+      switch (key) {
+        case "name": {
+          Instructor: {
+            name: value;
+          }
+        }
+          
+          break;
+      
+        default:
+          break;
+      }
+    }
+  }
 
   const [data, countItems] = await prisma.$transaction([
       prisma.instructor.findMany(
