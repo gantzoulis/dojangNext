@@ -9,6 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { count } from "console";
+import { kMaxLength } from "buffer";
+import cuid from "cuid";
 
 
 type InstsuctorList = Instructor & {disciplines:MartialArtsDiscipline[]}
@@ -97,21 +99,18 @@ const InstructorListPage = async ({searchParams}:
 
   const p = page ? parseInt(page) : 1;
 
-  // URL PARA<S Conditions
+  // URL PARAMS Conditions
+
+  const query = {}
 
   if(queryParams){
     for(const [key, value] of Object.entries(queryParams)){
-      switch (key) {
-        case "name": {
-          Instructor: {
-            name: value;
-          }
-        }
-          
-          break;
-      
-        default:
-          break;
+      if (value!==undefined) {
+        switch (key) {
+          case "name": 
+          {Instructor:{some:{name:value}}}
+            
+        }  
       }
     }
   }
@@ -130,6 +129,7 @@ const InstructorListPage = async ({searchParams}:
   ]);
 
   console.log("resolving " + countItems);
+  console.log(cuid());
 
   
   return (
